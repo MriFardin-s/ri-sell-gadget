@@ -1,3 +1,95 @@
 @import "tailwindcss";
+@import "@heroui/styles";
 
+@theme {
+  --color-theme-brown-primary: #cd9a62; 
+  --color-theme-brown-hover: #b5814c;   
+}
 
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --theme-bg: #fdfaf4;            
+    --theme-text: #2d241e;            
+    --theme-scrollbar-track: #f5ece1; 
+  }
+
+  .dark {
+    --theme-bg: #1a1412;             
+    --theme-text: #f7f3f0;           
+    --theme-scrollbar-track: #2a201c; 
+  }
+
+  body {
+    color: var(--theme-text);
+    background-color: var(--theme-bg);
+    font-family: '__Inter_aaf875', '__Inter_Fallback_aaf875', sans-serif; 
+    transition: background-color 0.3s, color 0.3s; 
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--theme-scrollbar-track);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-theme-brown-primary);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-theme-brown-hover);
+  }
+}
+
+@layer components {
+  .btn-theme-brown {
+    background-color: var(--color-theme-brown-primary);
+    color: #fffdfa; 
+    font-weight: 700;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-theme-brown:hover {
+    background-color: var(--color-theme-brown-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(181, 129, 76, 0.2), 0 2.5px 4px -1px rgba(181, 129, 76, 0.1);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out forwards;
+  }
+}
+
+@utility animate-loading-bar {
+  animation: loading-bar 1.5s infinite ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+input::-ms-reveal,
+input::-ms-clear {
+  display: none !important;
+}
