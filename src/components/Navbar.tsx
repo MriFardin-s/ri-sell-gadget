@@ -22,9 +22,15 @@ export default function Navbar() {
     const { data: session, isPending } = useSession();
     const user = session?.user;
 
+    const showPrivateLinks = isPending || !!user;
+
     const navLinks: NavLinkItem[] = [
         { name: 'Home', href: '/' },
-        { name: 'Explore', href: '/explore' },
+        { name: 'Explore Products', href: '/explore' },
+        ...(showPrivateLinks ? [
+            { name: 'Add Item', href: '/add-item' },
+            { name: 'Manage Items', href: '/manage-items' }
+        ] : [])
     ];
 
     const handleSignOut = async (): Promise<void> => {
