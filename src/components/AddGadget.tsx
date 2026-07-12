@@ -9,6 +9,7 @@ import {
     ListBox, ListBoxItem, Button
 } from "@heroui/react";
 import { toast } from "react-hot-toast";
+import { addGadget } from "@/lib/action/gadgets";
 
 interface GadgetData {
     title: string;
@@ -28,8 +29,6 @@ interface GadgetData {
 interface AddGadgetProps {
     addProduct?: (data: GadgetData) => Promise<{ success: boolean; insertedId?: string; message?: string }>;
 }
-
-
 
 export default function AddGadget({ addProduct }: AddGadgetProps) {
     const { data: session, isPending } = useSession();
@@ -140,28 +139,26 @@ export default function AddGadget({ addProduct }: AddGadgetProps) {
                 }
             };
 
-            if (addProduct) {
-                const res = await addProduct(newGadgetData);
-                if (!res.success) {
-                    throw new Error(res.message || "Backend error");
-                }
+            const res = await addGadget(newGadgetData);
+
+            if (res && (res.insertedId || res.acknowledged || res.success)) {
+                toast.success("Gadget added successfully!", {
+                    style: {
+                        background: '#fdf8f2',
+                        color: '#854d0e',
+                        border: '1px solid #d9a066',
+                        borderRadius: '12px',
+                        fontSize: '14px',
+                        fontWeight: '600'
+                    }
+                });
+                router.push("/explore");
             } else {
-                await new Promise((resolve) => setTimeout(resolve, 1500));
+                throw new Error("Backend operation failed");
             }
 
-            toast.success("Gadget added successfully!", {
-                style: {
-                    background: '#fdf8f2',
-                    color: '#854d0e',
-                    border: '1px solid #d9a066',
-                    borderRadius: '12px',
-                    fontSize: '14px',
-                    fontWeight: '600'
-                }
-            });
-
-            router.push("/manage-items");
         } catch (error) {
+            console.error("Submission error details:", error);
             toast.error("Failed to add gadget. Try again.", {
                 style: {
                     background: '#fef2f2',
@@ -182,7 +179,6 @@ export default function AddGadget({ addProduct }: AddGadgetProps) {
             <div className="max-w-2xl mx-auto bg-white dark:bg-neutral-900 rounded-2xl shadow-xl border border-neutral-200 dark:border-neutral-800 p-6 sm:p-10">
                 <div className="mb-8">
                     <h1 className="text-3xl font-black tracking-tight text-neutral-900 dark:text-neutral-100 flex items-center gap-3">
-
                         Add New <span className="bg-gradient-to-r from-[var(--color-theme-brown-primary)] to-[#d9a066] bg-clip-text text-transparent uppercase">Gadget</span>
                     </h1>
                     <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
@@ -205,7 +201,6 @@ export default function AddGadget({ addProduct }: AddGadgetProps) {
                         Click to select an image
                     </span>
                 </div>
-
 
                 <input type="file" accept="image/*" ref={fileInputRef} onChange={handleImageChange} className="hidden" />
 
