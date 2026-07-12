@@ -10,21 +10,9 @@ import {
 } from "@heroui/react";
 import { toast } from "react-hot-toast";
 import { addGadget } from "@/lib/action/gadgets";
+import { GadgetData } from "@/types/gadgets";
 
-interface GadgetData {
-    title: string;
-    shortDescription: string;
-    fullDescription: string;
-    price: number;
-    priority: string;
-    imageUrl: string;
-    status: string;
-    user: {
-        name: string | null | undefined;
-        email: string | null | undefined;
-        id: string;
-    };
-}
+
 
 interface AddGadgetProps {
     addProduct?: (data: GadgetData) => Promise<{ success: boolean; insertedId?: string; message?: string }>;
