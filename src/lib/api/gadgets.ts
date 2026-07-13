@@ -24,3 +24,17 @@ export const getGadgetById = async (id: string) => {
 export const getGadgetForManage = async (email: string, role: string) => {
     return serverFetch(`/api/manage-gadgets?email=${email}&role=${role}`);
 }
+
+export const getGadgetConditions = async () =>{
+    return serverFetch(`/api/condition-stats`);
+}
+
+
+export const getLatestGadgets = async () => {
+    return serverFetch(`/api/latest-gadgets`);
+};
+
+
+export const getStats = async () => {
+    return serverFetch(`/api/stats`);
+};
