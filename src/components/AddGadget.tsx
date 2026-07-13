@@ -10,20 +10,22 @@ import {
 } from "@heroui/react";
 import { toast } from "react-hot-toast";
 import { addGadget } from "@/lib/action/gadgets";
-import { GadgetData } from "@/types/gadgets";
+// import { GadgetData } from "@/types/gadgets";
 
 
 
-interface AddGadgetProps {
-    addProduct?: (data: GadgetData) => Promise<{ success: boolean; insertedId?: string; message?: string }>;
-}
+// interface AddGadgetProps {
+//     addProduct?: (data: GadgetData) => Promise<{ success: boolean; insertedId?: string; message?: string }>;
+// }
 
-export default function AddGadget({ addProduct }: AddGadgetProps) {
+export default function AddGadget() {
     const { data: session, isPending } = useSession();
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [selectedImage, setSelectedImage] = useState<File | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [priority, setPriority] = useState<string>("");
+    const [condition, setCondition] = useState<string>("");
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
@@ -63,14 +65,15 @@ export default function AddGadget({ addProduct }: AddGadgetProps) {
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
 
+        
         const title = data.title as string | undefined;
         const shortDescription = data.shortDescription as string | undefined;
         const fullDescription = data.fullDescription as string | undefined;
         const price = data.price as string | undefined;
-        const priority = data.priority as string | undefined;
 
-        if (!title || !shortDescription || !fullDescription || !price || !priority || !selectedImage) {
-            toast.error("Please fill in all fields and select an image", {
+     
+        if (!title || !shortDescription || !fullDescription || !price || !priority || !condition || !selectedImage) {
+            toast.error("Please fill in all fields (including Priority & Condition) and select an image", {
                 style: {
                     background: '#fef2f2',
                     color: '#991b1b',
@@ -117,7 +120,8 @@ export default function AddGadget({ addProduct }: AddGadgetProps) {
                 shortDescription,
                 fullDescription,
                 price: Number(price),
-                priority,
+                priority: priority,  
+                condition: condition, 
                 imageUrl: uploadedImageUrl,
                 status: "pending",
                 user: {
@@ -224,7 +228,7 @@ export default function AddGadget({ addProduct }: AddGadgetProps) {
                             <textarea name="fullDescription" rows={4} placeholder="Detailed specification and condition details..." className="w-full px-4 py-3 bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-theme-brown-primary text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 dark:placeholder-neutral-500 transition resize-none" />
                         </div>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
                             <div className="flex flex-col gap-1.5">
                                 <Label className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Price ($)</Label>
                                 <TextField aria-label="Price">
@@ -234,9 +238,15 @@ export default function AddGadget({ addProduct }: AddGadgetProps) {
 
                             <div className="flex flex-col gap-1.5">
                                 <Label className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Priority Level</Label>
-                                <Select aria-label="Priority Level" name="priority" className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-theme-brown-primary transition">
+                                <Select
+                                    aria-label="Priority Level"
+                                    name="priority"
+                                    selectedKey={priority}
+                                    onSelectionChange={(selected) => setPriority(selected as string)}
+                                    className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-theme-brown-primary transition"
+                                >
                                     <SelectTrigger className="w-full px-4 py-3 flex justify-between items-center text-neutral-900 dark:text-neutral-100">
-                                        <SelectValue>Select priority</SelectValue>
+                                        <SelectValue>{priority ? priority.charAt(0).toUpperCase() + priority.slice(1) : "Select priority"}</SelectValue>
                                         <SelectIndicator />
                                     </SelectTrigger>
                                     <SelectPopover className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-lg mt-1 overflow-hidden">
@@ -244,6 +254,27 @@ export default function AddGadget({ addProduct }: AddGadgetProps) {
                                             <ListBoxItem id="low" textValue="Low" className="px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 cursor-pointer">Low</ListBoxItem>
                                             <ListBoxItem id="medium" textValue="Medium" className="px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 cursor-pointer">Medium</ListBoxItem>
                                             <ListBoxItem id="high" textValue="High" className="px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 cursor-pointer">High</ListBoxItem>
+                                        </ListBox>
+                                    </SelectPopover>
+                                </Select>
+                            </div>
+                            <div className="flex flex-col gap-1.5">
+                                <Label className="text-sm font-semibold text-neutral-700 dark:text-neutral-300">Condition</Label>
+                                <Select
+                                    aria-label="Gadget Condition"
+                                    name="condition"
+                                    selectedKey={condition}
+                                    onSelectionChange={(selected) => setCondition(selected as string)}
+                                    className="w-full bg-neutral-50 dark:bg-neutral-800 border border-neutral-300 dark:border-neutral-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-theme-brown-primary transition"
+                                >
+                                    <SelectTrigger className="w-full px-4 py-3 flex justify-between items-center text-neutral-900 dark:text-neutral-100">
+                                        <SelectValue>{condition ? condition.charAt(0).toUpperCase() + condition.slice(1) : "Select condition"}</SelectValue>
+                                        <SelectIndicator />
+                                    </SelectTrigger>
+                                    <SelectPopover className="bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-xl shadow-lg mt-1 overflow-hidden">
+                                        <ListBox className="py-1">
+                                            <ListBoxItem id="new" textValue="New" className="px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 cursor-pointer">New</ListBoxItem>
+                                            <ListBoxItem id="old" textValue="Old" className="px-4 py-2 hover:bg-neutral-100 dark:hover:bg-neutral-700 text-neutral-800 dark:text-neutral-200 cursor-pointer">Old</ListBoxItem>
                                         </ListBox>
                                     </SelectPopover>
                                 </Select>

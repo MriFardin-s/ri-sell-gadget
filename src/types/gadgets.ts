@@ -11,9 +11,17 @@ export interface Gadget {
     fullDescription: string;
     price: number;
     priority: string;
+    condition: string;
     imageUrl: string;
     status: string;
     user: UserInfo;
+    createdAt?: { $date: string } | string | Date;
+}
+
+export interface GadgetsApiResponse {
+    gadgets: GadgetCardData[];
+    totalItems: number;
+    totalPages: number;
 }
 
 export type GadgetCardData = Omit<Gadget, "fullDescription" | "status" | "user">;
@@ -21,3 +29,12 @@ export type GadgetCardData = Omit<Gadget, "fullDescription" | "status" | "user">
 export type GadgetInput = Omit<Gadget, "_id">;
 
 export type GadgetData = GadgetInput;
+
+
+export interface GetGadgetsParams {
+    search?: string;
+    priority?: string;
+    condition?: string;
+    sort?: string;
+    page?: string | number;
+}
