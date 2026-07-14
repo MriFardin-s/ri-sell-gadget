@@ -18,6 +18,14 @@ import { addGadget } from "@/lib/action/gadgets";
 //     addProduct?: (data: GadgetData) => Promise<{ success: boolean; insertedId?: string; message?: string }>;
 // }
 
+interface ApiResponse {
+    insertedId?: string;
+    acknowledged?: boolean;
+    success?: boolean;
+}
+
+
+
 export default function AddGadget() {
     const { data: session, isPending } = useSession();
     const router = useRouter();
@@ -65,13 +73,13 @@ export default function AddGadget() {
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries());
 
-        
+
         const title = data.title as string | undefined;
         const shortDescription = data.shortDescription as string | undefined;
         const fullDescription = data.fullDescription as string | undefined;
         const price = data.price as string | undefined;
 
-     
+
         if (!title || !shortDescription || !fullDescription || !price || !priority || !condition || !selectedImage) {
             toast.error("Please fill in all fields (including Priority & Condition) and select an image", {
                 style: {
@@ -120,8 +128,8 @@ export default function AddGadget() {
                 shortDescription,
                 fullDescription,
                 price: Number(price),
-                priority: priority,  
-                condition: condition, 
+                priority: priority,
+                condition: condition,
                 imageUrl: uploadedImageUrl,
                 status: "pending",
                 user: {
@@ -132,8 +140,9 @@ export default function AddGadget() {
             };
 
             const res = await addGadget(newGadgetData);
+            const responseData = res as ApiResponse;
 
-            if (res && (res.insertedId || res.acknowledged || res.success)) {
+            if (responseData && (responseData.insertedId || responseData.acknowledged || responseData.success)) {
                 toast.success("Gadget added successfully!", {
                     style: {
                         background: '#fdf8f2',

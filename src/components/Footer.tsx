@@ -1,4 +1,4 @@
-import { Envelope, Handset, LocationArrowFill } from "@gravity-ui/icons";
+import { Envelope, Handset, LocationArrow} from "@gravity-ui/icons";
 import Link from "next/link";
 
 export default function Footer() {
@@ -32,6 +32,16 @@ export default function Footer() {
                                     Explore Gadgets
                                 </Link>
                             </li>
+                            <li>
+                                <Link href="/about" className="hover:text-[#d9a066] transition-colors">
+                                    About Us
+                                </Link>
+                            </li>
+                            <li>
+                                <Link href="/contact" className="hover:text-[#d9a066] transition-colors">
+                                    Contact Us
+                                </Link>
+                            </li>
                             {/* <li>
                                 <Link href="/dashboard" className="hover:text-[#d9a066] transition-colors">
                                     Dashboard
@@ -47,7 +57,7 @@ export default function Footer() {
                         <ul className="space-y-2.5 text-sm">
                             <li className="flex items-center gap-2">
                               
-                                <span className="text-[#d9a066]">  <LocationArrowFill/> </span> Khulna, Bangladesh
+                                <span className="text-[#d9a066]">  <LocationArrow/> </span> Khulna, Bangladesh
                             </li>
                             <li className="flex items-center gap-2">
                                 

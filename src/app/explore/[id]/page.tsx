@@ -11,7 +11,7 @@ interface PageProps {
 
 const GadgetDetailsPage = async ({ params }: PageProps) => {
     const { id } = await params;
-    const gadget: Gadget | null = await getGadgetById(id);
+   const gadget = await getGadgetById(id) as Gadget | null;
 
     if (!gadget) {
         notFound();

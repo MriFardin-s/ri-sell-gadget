@@ -1,5 +1,5 @@
 import { GadgetsApiResponse, GetGadgetsParams } from "@/types/gadgets";
-import { serverFetch } from "../core/server"
+import { protectedFetch, serverFetch } from "../core/server"
 
 export const getGadgets = async (params?: GetGadgetsParams): Promise<GadgetsApiResponse> => {
     const queryString = params
@@ -13,7 +13,7 @@ export const getGadgets = async (params?: GetGadgetsParams): Promise<GadgetsApiR
         ).toString()}`
         : "";
 
-    return serverFetch(`/api/gadgets${queryString}`);
+    return serverFetch<GadgetsApiResponse>(`/api/gadgets${queryString}`);
 };
 
 
@@ -22,7 +22,7 @@ export const getGadgetById = async (id: string) => {
 }
 
 export const getGadgetForManage = async (email: string, role: string) => {
-    return serverFetch(`/api/manage-gadgets?email=${email}&role=${role}`);
+    return protectedFetch<unknown>(`/api/manage-gadgets?email=${email}&role=${role}`);
 }
 
 export const getGadgetConditions = async () =>{

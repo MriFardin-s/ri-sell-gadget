@@ -5,9 +5,14 @@ import { getGadgetConditions } from '@/lib/api/gadgets';
 const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   new: Sparkles,
   used: Box,
-  refurbished: Thunderbolt,
+  // refurbished: Thunderbolt,
   default: Cubes3Overlap,
 };
+interface CategoryResponse {
+    data?: GadgetCondition[];
+    success?: boolean;
+    message?: string;
+}
 
 interface GadgetCondition {
   slug: string;
@@ -18,7 +23,8 @@ interface GadgetCondition {
 
 export default async function Categories() {
   const response = await getGadgetConditions();
-  const categories: GadgetCondition[] = response?.data || [];
+  const typedResponse = response as CategoryResponse;
+  const categories: GadgetCondition[] = typedResponse?.data || [];
 
   return (
     <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,7 +32,7 @@ export default async function Categories() {
         <span className="text-xs font-bold uppercase tracking-widest text-[var(--color-theme-brown-primary)]">Browse by Group</span>
         <h2 className="text-3xl font-black uppercase tracking-tight text-[var(--theme-text)] mt-1">Top Conditions</h2>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:flex sm:justify-center sm:flex-wrap gap-4">
         {categories?.map((cat: GadgetCondition) => {
           const IconComponent = iconMap[cat.iconKey] || iconMap.default;
 

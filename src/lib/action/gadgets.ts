@@ -16,11 +16,18 @@ import { serverMutation } from "../core/server";
 //     };
 // }
 
+interface MutationResponse {
+    success?: boolean;
+    ok?: boolean;
+    message?: string;
+}
+
 export const addGadget = async (gadget: GadgetInput) => {
     return await serverMutation("/api/add-gadget", gadget, "POST");
 }
 
 
-export const deleteGadget = async (id: string) => {
-    return await serverMutation(`/api/delete-gadget/${id}`, {}, "DELETE");
+export const deleteGadget = async (id: string): Promise<MutationResponse> => {
+    const res = await serverMutation(`/api/delete-gadget/${id}`, {}, "DELETE");
+    return res as MutationResponse;
 }

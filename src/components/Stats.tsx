@@ -12,9 +12,16 @@ interface StatsMetrics {
     lastYearGadgets: number;
 }
 
+interface StatsResponse {
+    data?: StatsMetrics;
+    success?: boolean;
+    message?: string;
+}
+
 export default async function Stats() {
     const response = await getStats();
-    const stats: StatsMetrics = response?.data || {
+    const typedResponse = response as StatsResponse;
+    const stats: StatsMetrics = typedResponse?.data || {
         totalUsers: 0,
         totalGadgets: 0,
         lastYearUsers: 0,
@@ -63,7 +70,7 @@ export default async function Stats() {
                 </h2>
             </div>
 
-            {/* স্ট্যাটস কার্ড গ্রিড */}
+          
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 {statCards.map((card, idx) => {
                     const IconComponent = card.icon;
@@ -93,7 +100,7 @@ export default async function Stats() {
                 })}
             </div>
 
-            {/* Recharts ভিজ্যুয়ালাইজেশন সেকশন */}
+      
             <div className="mt-8">
                 <StatsCharts stats={stats} />
             </div>

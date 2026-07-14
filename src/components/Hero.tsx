@@ -18,8 +18,8 @@ const slides: Slide[] = [
         title: "Next-Gen Tech Essentials",
         subtitle: "Upgrade your workflow with our handpicked premium smart gadgets designed for absolute efficiency.",
         badge: "New Arrival",
-        ctaText: "Explore Gadgets",
-        ctaLink: "/gadgets"
+        ctaText: "Explore Gadgets", 
+        ctaLink: "/explore"
     },
    {
         id: 2,
@@ -37,7 +37,7 @@ export default function Hero() {
     useEffect(() => {
         const timer = setInterval(() => {
             setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-        }, 6000);
+        }, 3000);
         return () => clearInterval(timer);
     }, []);
 

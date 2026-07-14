@@ -26,10 +26,10 @@ export default function Navbar() {
 
     const navLinks: NavLinkItem[] = [
         { name: 'Home', href: '/' },
-        { name: 'Explore Products', href: '/explore' },
+        { name: 'Explore Gadgets', href: '/explore' },
         ...(showPrivateLinks ? [
-            { name: 'Add Item', href: '/add-item' },
-            { name: 'Manage Items', href: '/manage-items' }
+            { name: 'Add Gadgets', href: '/add-item' },
+            { name: 'Manage Gadgets', href: '/manage-items' }
         ] : [])
     ];
 
@@ -141,7 +141,7 @@ export default function Navbar() {
                                 <button
                                     onClick={handleSignOut}
                                     disabled={isLoggingOut}
-                                    className="flex items-center px-4 py-3.5 text-[0.875rem] font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/20 hover:bg-red-100 dark:hover:bg-red-950/40 rounded-lg transition disabled:opacity-50 cursor-pointer"
+                                    className="flex items-center px-4 py-3.5 text-[0.875rem] font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/20 hover:bg-red-100 dark:hover:bg-red-950/40 rounded-lg transition disabled:opacity-50 cursor-pointer whitespace-nowrap "
                                 >
                                     {isLoggingOut ? "Signing Out..." : "Sign Out"}
                                 </button>

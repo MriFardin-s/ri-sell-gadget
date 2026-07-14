@@ -11,6 +11,11 @@ import Link from 'next/link';
 //     priority: string;
 //     imageUrl: string;
 // }
+interface LatestGadgetResponse {
+    data?: GadgetCardData[];
+    success?: boolean;
+    message?: string;
+}
 
 const priorityColors: Record<string, string> = {
     high: "bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-400 border-red-200 dark:border-red-900",
@@ -20,7 +25,8 @@ const priorityColors: Record<string, string> = {
 
 export default async function LatestGadget() {
     const response = await getLatestGadgets();
-    const latestGadgets: GadgetCardData[] = response?.data || [];
+    const typedResponse = response as LatestGadgetResponse;
+    const latestGadgets: GadgetCardData[] = typedResponse?.data || [];
 
     return (
         <section className="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
