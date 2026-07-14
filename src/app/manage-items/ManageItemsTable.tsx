@@ -13,10 +13,21 @@ interface ManageItemsTableProps {
 
 export default function ManageItemsTable({ initialGadgets }: ManageItemsTableProps) {
     const [gadgets, setGadgets] = useState<Gadget[]>(initialGadgets);
-    
+
     const [isAlertOpen, setIsAlertOpen] = useState(false);
     const [productToDelete, setProductToDelete] = useState<string | null>(null);
     const [isDeleting, setIsDeleting] = useState(false);
+
+    const priorityColors: Record<string, string> = {
+        high: "bg-red-50 text-red-700 dark:bg-red-950/40 dark:text-red-400 border-red-200 dark:border-red-900",
+        medium: "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-400 border-amber-200 dark:border-amber-900",
+        low: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900",
+    };
+
+    const conditionColors: Record<string, string> = {
+        new: "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 border-blue-200 dark:border-blue-900",
+        old: "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-400 border-purple-200 dark:border-purple-900",
+    };
 
     const handleDeleteConfirm = async () => {
         if (!productToDelete) return;
@@ -86,8 +97,14 @@ export default function ManageItemsTable({ initialGadgets }: ManageItemsTablePro
                                     </div>
 
                                     <div className="flex items-center justify-between border-t border-neutral-100 dark:border-neutral-800 pt-3 mt-1">
-                                        <span className="inline-flex items-center px-2 py-0.5 text-[10px] font-bold uppercase border rounded-lg bg-neutral-50 dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400">
+
+                                        <span className={`inline-flex items-center px-2.5 py-0.5 text-xs font-bold uppercase border rounded-lg ${priorityColors[item.priority?.toLowerCase()] || priorityColors.low}`}>
                                             {item.priority || "Low"}
+                                        </span>
+
+
+                                        <span className={`inline-flex items-center px-2.5 py-0.5 text-xs font-bold uppercase border rounded-lg ${conditionColors[item.condition?.toLowerCase()] || conditionColors.old}`}>
+                                            {item.condition || "Old"}
                                         </span>
 
                                         <div className="flex items-center gap-2">
@@ -118,6 +135,7 @@ export default function ManageItemsTable({ initialGadgets }: ManageItemsTablePro
                                     <th scope="col" className="px-6 py-4">Title</th>
                                     <th scope="col" className="px-6 py-4">Price</th>
                                     <th scope="col" className="px-6 py-4">Priority</th>
+                                    <th scope="col" className="px-6 py-4">Condition</th>
                                     <th scope="col" className="px-6 py-4 text-right">Actions</th>
                                 </tr>
                             </thead>
@@ -141,9 +159,16 @@ export default function ManageItemsTable({ initialGadgets }: ManageItemsTablePro
                                                 ${item.price}
                                             </td>
                                             <td className="whitespace-nowrap px-6 py-4">
-                                                <span className="inline-flex items-center px-2.5 py-0.5 text-xs font-bold uppercase border rounded-lg bg-neutral-50 dark:bg-neutral-950 border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400">
+                                                <span className={`inline-flex items-center px-2.5 py-0.5 text-xs font-bold uppercase border rounded-lg ${priorityColors[item.priority?.toLowerCase()] || priorityColors.low}`}>
                                                     {item.priority || "Low"}
                                                 </span>
+
+                                            </td>
+                                            <td className="whitespace-nowrap px-6 py-4">
+                                                <span className={`inline-flex items-center px-2.5 py-0.5 text-xs font-bold uppercase border rounded-lg ${conditionColors[item.condition?.toLowerCase()] || conditionColors.old}`}>
+                                                    {item.condition || "Old"}
+                                                </span>
+
                                             </td>
                                             <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                                                 <div className="flex items-center justify-end gap-3">

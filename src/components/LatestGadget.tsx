@@ -23,6 +23,11 @@ const priorityColors: Record<string, string> = {
     low: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900",
 };
 
+const conditionColors: Record<string, string> = {
+    new: "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 border-blue-200 dark:border-blue-900",
+    old: "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-400 border-purple-200 dark:border-purple-900",
+};
+
 export default async function LatestGadget() {
     const response = await getLatestGadgets();
     const typedResponse = response as LatestGadgetResponse;
@@ -42,6 +47,7 @@ export default async function LatestGadget() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {latestGadgets?.map((gadget) => {
                     const currentPriority = gadget.priority?.toLowerCase() || "low";
+                    const currentCondition = gadget.condition?.toLowerCase() || "old";
 
                     return (
                         <div key={gadget._id} className="group bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden">
@@ -53,6 +59,9 @@ export default async function LatestGadget() {
                                 />
                                 <span className={`absolute top-5 right-3 px-2.5 py-1 text-xs font-bold uppercase border tracking-wider rounded-lg ${priorityColors[currentPriority] || priorityColors.low}`}>
                                     {gadget.priority}
+                                </span>
+                                <span className={`absolute top-5 left-3 px-2.5 py-1 text-xs font-bold uppercase border tracking-wider rounded-lg ${conditionColors[currentCondition] || conditionColors.old}`}>
+                                    {gadget.condition}
                                 </span>
                             </div>
 

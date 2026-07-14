@@ -65,19 +65,7 @@ export const serverMutation = async <T,>(
 
 const handleStatusCode = async <T,>(res: Response): Promise<T> => {
     if (!res.ok) {
-        switch (res.status) {
-            case 401:
-                redirect("/unauthorized");
-            case 403:
-                redirect("/forbidden");
-            case 404:
-                redirect("/not-found");
-            case 400:
-            case 500:
-                redirect("/error");
-            default:
-                redirect("/error");
-        }
+        redirect("/error");
     }
 
     return res.json() as Promise<T>;

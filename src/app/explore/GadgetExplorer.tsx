@@ -122,7 +122,7 @@ export default function ExploreGadgetsClient({ serverData, activeFilters }: Expl
                     >
                         <option value="">All Conditions</option>
                         <option value="new">New</option>
-                        <option value="used">Used</option>
+                        <option value="old">Old</option>
                     </select>
                 </div>
 

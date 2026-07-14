@@ -11,7 +11,7 @@ interface PageProps {
 
 const GadgetDetailsPage = async ({ params }: PageProps) => {
     const { id } = await params;
-   const gadget = await getGadgetById(id) as Gadget | null;
+    const gadget = await getGadgetById(id) as Gadget | null;
 
     if (!gadget) {
         notFound();
@@ -23,7 +23,13 @@ const GadgetDetailsPage = async ({ params }: PageProps) => {
         low: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900",
     };
 
+    const conditionColors: Record<string, string> = {
+        new: "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 border-blue-200 dark:border-blue-900",
+        old: "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-400 border-purple-200 dark:border-purple-900",
+    };
+
     const currentPriority = gadget.priority?.toLowerCase() || "low";
+    const currentCondition = gadget.condition?.toLowerCase() || "old";
 
     return (
         <div className="min-h-screen bg-neutral-50 dark:bg-neutral-950 py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-300">
@@ -37,6 +43,10 @@ const GadgetDetailsPage = async ({ params }: PageProps) => {
                     />
                     <span className={`absolute top-5 left-5 px-3 py-1 text-xs font-bold uppercase border tracking-wider rounded-lg ${priorityColors[currentPriority] || priorityColors.low}`}>
                         {gadget.priority} Priority
+                    </span>
+
+                    <span className={`absolute top-5 right-3 px-2.5 py-1 text-xs font-bold uppercase border tracking-wider rounded-lg ${conditionColors[currentCondition] || conditionColors.old}`}>
+                        {gadget.condition}
                     </span>
                 </div>
 

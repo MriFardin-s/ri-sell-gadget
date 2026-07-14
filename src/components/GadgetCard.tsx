@@ -9,18 +9,28 @@ export default function GadgetCard({ gadget }: { gadget: GadgetCardData }) {
         low: "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 border-emerald-200 dark:border-emerald-900",
     };
 
+    const conditionColors: Record<string, string> = {
+        new: "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-400 border-blue-200 dark:border-blue-900",
+        old: "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-400 border-purple-200 dark:border-purple-900",
+    };
+
     const currentPriority = gadget.priority?.toLowerCase() || "low";
+    const currentCondition = gadget.condition?.toLowerCase() || "old";
 
     return (
         <div className="group bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 shadow-md hover:shadow-xl transition-all duration-300 flex flex-col overflow-hidden">
             <div className="relative w-full h-64 overflow-hidden bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center ">
-                 <img
-                        src={gadget.imageUrl}
-                        alt={gadget.title}
-                        className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
-                    />
+                <img
+                    src={gadget.imageUrl}
+                    alt={gadget.title}
+                    className="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500"
+                />
                 <span className={`absolute top-5 right-3 px-2.5 py-1 text-xs font-bold uppercase border tracking-wider rounded-lg ${priorityColors[currentPriority] || priorityColors.low}`}>
                     {gadget.priority}
+                </span>
+
+                <span className={`absolute top-5 left-3 px-2.5 py-1 text-xs font-bold uppercase border tracking-wider rounded-lg ${conditionColors[currentCondition] || conditionColors.old}`}>
+                    {gadget.condition}
                 </span>
             </div>
 
