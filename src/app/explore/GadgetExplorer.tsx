@@ -5,6 +5,7 @@ import { useTransition } from "react";
 import { Pagination } from "@heroui/react";
 import GadgetCard from "@/components/GadgetCard";
 import { GadgetsApiResponse } from "@/types/gadgets";
+import { Xmark } from "@gravity-ui/icons";
 
 interface ExploreGadgetsClientProps {
     serverData: GadgetsApiResponse;
@@ -49,6 +50,12 @@ export default function ExploreGadgetsClient({ serverData, activeFilters }: Expl
         });
     };
 
+    const clearAllFilters = () => {
+        startTransition(() => {
+            router.push("?", { scroll: false });
+        });
+    };
+
     const getPageNumbers = () => {
         if (totalPages <= 1) {
             return [1];
@@ -89,25 +96,27 @@ export default function ExploreGadgetsClient({ serverData, activeFilters }: Expl
 
     return (
         <div className={`space-y-6 ${isPending ? "opacity-70 pointer-events-none transition-opacity" : ""}`}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 bg-white dark:bg-neutral-900 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 shadow-sm items-end">
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 bg-white dark:bg-neutral-900 p-4 rounded-xl border border-neutral-200 dark:border-neutral-800 shadow-sm">
                 <div className="lg:col-span-2">
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-neutral-400 dark:text-neutral-500 mb-1.5 block">Search</label>
                     <input
                         type="text"
-                        placeholder="Search gadgets by title..."
-                        defaultValue={search}
+                        placeholder="Search gadgets..."
+                        value={search}
                         onChange={(e) => updateUrlParams({ search: e.target.value })}
-                        className="w-full px-4 py-2 text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d9a066]"
+                        className="w-full px-4 py-2 text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-theme-brown-primary)]"
                     />
                 </div>
 
                 <div>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-neutral-400 dark:text-neutral-500 mb-1.5 block">Priority</label>
                     <select
                         value={priority}
                         onChange={(e) => updateUrlParams({ priority: e.target.value })}
-                        className="w-full px-3 py-2 text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d9a066]"
+                        className="w-full px-3 py-2 text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-theme-brown-primary)]"
                     >
-                        <option value="">All Priorities</option>
+                        <option value="">All</option>
                         <option value="high">High</option>
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
@@ -115,30 +124,41 @@ export default function ExploreGadgetsClient({ serverData, activeFilters }: Expl
                 </div>
 
                 <div>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-neutral-400 dark:text-neutral-500 mb-1.5 block">Condition</label>
                     <select
                         value={condition}
                         onChange={(e) => updateUrlParams({ condition: e.target.value })}
-                        className="w-full px-3 py-2 text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d9a066]"
+                        className="w-full px-3 py-2 text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-theme-brown-primary)]"
                     >
-                        <option value="">All Conditions</option>
+                        <option value="">All</option>
                         <option value="new">New</option>
                         <option value="old">Old</option>
                     </select>
                 </div>
 
                 <div>
+                    <label className="text-[10px] uppercase tracking-widest font-bold text-neutral-400 dark:text-neutral-500 mb-1.5 block">Sort</label>
                     <select
                         value={sort}
                         onChange={(e) => updateUrlParams({ sort: e.target.value })}
-                        className="w-full px-3 py-2 text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d9a066]"
+                        className="w-full px-3 py-2 text-sm bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--color-theme-brown-primary)]"
                     >
-                        <option value="newest">Newest First</option>
-                        <option value="oldest">Oldest First</option>
-                        <option value="price-low">Price: Low to High</option>
-                        <option value="price-high">Price: High to Low</option>
+                        <option value="newest">Newest</option>
+                        <option value="oldest">Oldest</option>
+                        <option value="price-low">Price: Low</option>
+                        <option value="price-high">Price: High</option>
                     </select>
                 </div>
+
+                <button
+                    onClick={clearAllFilters}
+                    className="btn-theme-brown h-[38px] rounded-lg flex items-center justify-center gap-2 text-xs uppercase tracking-widest font-bold"
+                >
+                    <Xmark className="w-4 h-4" />
+                    Clear
+                </button>
             </div>
+
 
             {gadgets.length === 0 ? (
                 <div className="text-center py-20 bg-white dark:bg-neutral-900 rounded-2xl border border-neutral-200 dark:border-neutral-800">
@@ -151,13 +171,13 @@ export default function ExploreGadgetsClient({ serverData, activeFilters }: Expl
                     ))}
                 </div>
             )}
-            
+
             <div className="mt-10 pt-6 border-t border-neutral-200 dark:border-neutral-800 flex justify-center">
                 <Pagination className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
                     <Pagination.Summary className="text-sm text-neutral-500 dark:text-neutral-400">
                         Showing <b>{startItem}-{endItem}</b> of <b>{totalItems}</b> results
                     </Pagination.Summary>
-                    
+
                     <Pagination.Content className="flex items-center gap-1 bg-white dark:bg-neutral-900 p-1.5 rounded-xl border border-neutral-200 dark:border-neutral-800 shadow-sm">
                         <Pagination.Item>
                             <button
@@ -178,11 +198,10 @@ export default function ExploreGadgetsClient({ serverData, activeFilters }: Expl
                                 <Pagination.Item key={`page-${p}`}>
                                     <button
                                         onClick={() => updateUrlParams({ page: p })}
-                                        className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${
-                                            p === page
-                                                ? "bg-[#d9a066] text-white shadow-sm"
-                                                : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
-                                        }`}
+                                        className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all ${p === page
+                                            ? "bg-[#d9a066] text-white shadow-sm"
+                                            : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                                            }`}
                                     >
                                         {p}
                                     </button>
